@@ -10,7 +10,7 @@
                 <a class="navbar-brand">#{msg['employeeList']}</a>
                 <h:form class="d-flex">
                     <h:inputText value="#{employeeBean.searchQuery}" class="form-control me-2" placeholder="#{msg['searchPlaceholder']}" aria-label="#{msg['searchPlaceholder']}">
-                    <f:passThroughAttribute name="placeholder" value="#{msg['searchPlaceholder']}"/>
+                        <f:passThroughAttribute name="placeholder" value="#{msg['searchPlaceholder']}"/>
                     </h:inputText>
                     <h:commandButton value="#{msg['searchButton']}" action="#{employeeBean.searchEmployees}" styleClass="btn btn-outline-success"/>
                 </h:form>
@@ -31,33 +31,35 @@
         <br/><br/>
         <div class="row justify-content-center">
             <div class="col-md-10">
-
-
-
                 <h:form id="employeeForm">
                     <h:dataTable value="#{employeeBean.employees}" var="employee"
                                  styleClass="table table-striped table-bordered table-hover" headerClass="text-center" rowClasses="odd-row, even-row">
                         <h:column>
-                            <f:facet name="header">#{msg['nameHeader']}</f:facet>
-                            <h:outputText value="#{employee.name}" rendered="#{!employee.editable}"/>
-                            <h:inputText value="#{employee.name}" rendered="#{employee.editable}" styleClass="form-control"/>
+                            <f:facet name="header">ID</f:facet>
+                            <h:outputText value="#{employee.id}" />
                         </h:column>
                         <h:column>
-                            <f:facet name="header">#{msg['emailHeader']}</f:facet>
-                            <h:outputText value="#{employee.email}" rendered="#{!employee.editable}"/>
-                            <h:inputText value="#{employee.email}" rendered="#{employee.editable}" styleClass="form-control"/>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{employee.name}" />
                         </h:column>
                         <h:column>
-                            <f:facet name="header">#{msg['dobHeader']}</f:facet>
-                            <h:outputText value="#{employee.dob}" rendered="#{!employee.editable}"/>
-                            <h:inputText value="#{employee.dob}" rendered="#{employee.editable}" styleClass="form-control">
-                                <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </h:inputText>
+                            <f:facet name="header">Email</f:facet>
+                            <h:outputText value="#{employee.email}" />
                         </h:column>
                         <h:column>
-                            <f:facet name="header">#{msg['departmentHeader']}</f:facet>
-                            <h:outputText value="#{employee.department}" rendered="#{!employee.editable}"/>
-                            <h:inputText value="#{employee.department}" rendered="#{employee.editable}" styleClass="form-control"/>
+                            <f:facet name="header">Skill</f:facet>
+                            <h:outputText value="#{employee.skills}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Project</f:facet>
+                            <h:panelGroup rendered="#{not empty employee.projects}">
+                                <ul>
+                                    <ui:repeat value="#{employee.projects}" var="project">
+                                        <li>#{project.name}</li>
+                                    </ui:repeat>
+                                </ul>
+                            </h:panelGroup>
+                            <h:outputText value="No projects" rendered="#{empty employee.projects}" />
                         </h:column>
                         <h:column>
                             <h:commandButton value="#{msg['editButton']}" action="#{employeeBean.editEmployee(employee)}" rendered="#{!employee.editable}" styleClass="btn btn-outline-warning"/>
@@ -65,50 +67,6 @@
                             <h:commandButton value="#{msg['saveButton']}" action="#{employeeBean.saveChanges(employee)}" rendered="#{employee.editable}" styleClass="btn btn-outline-success"/>
                         </h:column>
                     </h:dataTable>
-
-                </h:form>
-                <h:form id="paginationForm" styleClass="d-flex justify-content-center align-items-center">
-                    <h:outputText value="Page #{employeeBean.currentPage}" />
-                    <h:commandLink value="Previous" action="#{employeeBean.navigateToPreviousPage}" styleClass="btn btn-outline-secondary text-center mx-2" />
-                    <h:commandLink value="Next" action="#{employeeBean.navigateToNextPage}" styleClass="btn btn-outline-secondary text-center mx-2" />
-                </h:form>
-                <h:form>
-                    <div class="container">
-                        <h:commandButton value="#{msg['addButton']}" action="#{employeeBean.toggleFields()}" styleClass="btn btn-primary mt-2"  immediate="true"/>
-
-                        <h:panelGroup rendered="#{employeeBean.fieldsVisible}">
-                            <div class="row">
-                                <div class="col">
-                                    <h:inputText id="name" value="#{employeeBean.employee.name}" required="true" styleClass="form-control">
-                                        <f:passThroughAttribute name="placeholder" value="#{msg['namePlaceholder']}"/>
-                                    </h:inputText>
-                                    <h:message for="name" style="color: red"/>
-                                </div>
-                                <div class="col">
-                                    <h:inputText id="email" value="#{employeeBean.employee.email}" required="true" styleClass="form-control" validator="#{employeeBean.validateEmail}">
-                                        <f:passThroughAttribute name="placeholder" value="#{msg['emailPlaceholder']}"/>
-                                    </h:inputText>
-                                    <h:message for="email" style="color: red"/>
-                                </div>
-                                <div class="col">
-                                    <h:inputText id="dob" value="#{employeeBean.employee.dob}" required="true" styleClass="form-control">
-                                        <f:convertDateTime pattern="yyyy-MM-dd"/>
-                                        <f:passThroughAttribute name="placeholder" value="#{msg['dobPlaceholder']}"/>
-                                    </h:inputText>
-                                    <h:message for="dob" style="color: red"/>
-                                </div>
-                                <div class="col">
-                                    <h:inputText id="department" value="#{employeeBean.employee.department}" required="true" styleClass="form-control">
-                                        <f:passThroughAttribute name="placeholder" value="#{msg['departmentPlaceholder']}"/>
-                                    </h:inputText>
-                                    <h:message for="department" style="color: red"/>
-                                </div>
-                                <div class="col">
-                                    <h:commandButton value="Save" action="#{employeeBean.saveEmployee()}" styleClass="btn btn-primary mt-2"/>
-                                </div>
-                            </div>
-                        </h:panelGroup>
-                    </div>
                 </h:form>
             </div>
         </div>

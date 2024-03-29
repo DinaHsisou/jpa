@@ -1,35 +1,36 @@
 package com.example.devoir_jsf.dao;
 
-import com.example.devoir_jsf.model.Employee;
+import com.example.devoir_jsf.bean.EmployeeBean;
+
+import com.example.devoir_jsf.model.Employe;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
-
 import java.util.List;
 
 public class EmployeeRepository {
-    private EntityManager entityManager;
-    private EntityManagerFactory entityManagerFactory;
+    private final EntityManagerFactory entityManagerFactory;
+    private final EntityManager entityManager;
 
     public EmployeeRepository() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("eclipse-link");
-        this.entityManager = entityManagerFactory.createEntityManager();
+        entityManagerFactory = Persistence.createEntityManagerFactory("eclipse-link");
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
-    public List<Employee> getAllEmployees() {
-        Query query = entityManager.createQuery("SELECT e FROM Employee e");
+    public List<Employe> getAllEmployees() {
+        Query query = entityManager.createQuery("SELECT e FROM Employe e");
         return query.getResultList();
     }
 
-    public void AjouterUtilisateur(Employee employee) {
+    public void addEmployee(Employe employee) {
         entityManager.getTransaction().begin();
         entityManager.persist(employee);
         entityManager.getTransaction().commit();
     }
 
-    public void deleteEmployee(int id) {
-        Employee employee = entityManager.find(Employee.class, id);
+    public void deleteEmployee(long id) {
+        Employe employee = entityManager.find(Employe.class, id);
         if (employee != null) {
             entityManager.getTransaction().begin();
             entityManager.remove(employee);
@@ -37,14 +38,14 @@ public class EmployeeRepository {
         }
     }
 
-    public boolean updateEmployee(Employee employee) {
-        Employee existingEmployee = entityManager.find(Employee.class, employee.getId());
+    public boolean updateEmployee(Employe employee) {
+        Employe existingEmployee = entityManager.find(Employe.class, employee.getId());
         if (existingEmployee != null) {
             entityManager.getTransaction().begin();
             existingEmployee.setName(employee.getName());
             existingEmployee.setEmail(employee.getEmail());
-            existingEmployee.setDob(employee.getDob());
-            existingEmployee.setDepartment(employee.getDepartment());
+            existingEmployee.setSkills(employee.getSkills());
+            existingEmployee.setProjects(employee.getProjects());
             entityManager.getTransaction().commit();
             return true;
         }
@@ -57,9 +58,9 @@ public class EmployeeRepository {
     }
 
     // Custom queries
-    public Employee findByNom(String nom) {
-        return entityManager.createQuery("SELECT e FROM Employee e WHERE e.name = :nom", Employee.class)
-                .setParameter("nom", nom)
+    public Employe findByName(String name) {
+        return entityManager.createQuery("SELECT e FROM Employe e WHERE e.name = :name", Employe.class)
+                .setParameter("name", name)
                 .getSingleResult();
     }
 }

@@ -1,37 +1,35 @@
 package com.example.devoir_jsf.service;
 
 import com.example.devoir_jsf.dao.EmployeeRepository;
-import com.example.devoir_jsf.model.Employee;
+import com.example.devoir_jsf.model.Employe;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class EmployeeService {
-    private Employee employee;
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
     public EmployeeService() {
         this.employeeRepository = new EmployeeRepository();
     }
 
-    public List<Employee> getAllEmployees() throws SQLException {
+    public List<Employe> getAllEmployees() throws SQLException {
         return employeeRepository.getAllEmployees();
     }
-    public void ajouterEmploye(Employee employee) throws SQLException {
-        employeeRepository.AjouterUtilisateur(employee);
+
+    public void addEmployee(Employe employee) throws SQLException {
+        employeeRepository.addEmployee(employee);
     }
 
-    public void deleteEmployee(int id) throws SQLException {
-        System.out.println("dkhl l  employee dyal service");
-
-        employeeRepository.deleteEmployee(employee.getId());
-        System.out.println("khrj l  employee dyal service");
-
+    public void deleteEmployee(long id) throws SQLException {
+        employeeRepository.deleteEmployee(id);
     }
 
-    public void updateEmployee(Employee employee) throws SQLException {
-        employeeRepository.updateEmployee(employee);
+    public boolean updateEmployee(Employe employee) throws SQLException {
+        return employeeRepository.updateEmployee(employee);
     }
 
-
+    public void close() {
+        employeeRepository.close();
+    }
 }

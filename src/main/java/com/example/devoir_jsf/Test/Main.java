@@ -1,7 +1,5 @@
 package com.example.devoir_jsf.Test;
 
-import com.example.devoir_jsf.model.Employee;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
